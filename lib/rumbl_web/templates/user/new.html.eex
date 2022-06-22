@@ -9,7 +9,6 @@
 <%end %>
 </div>
 
-
 <div>
 <%= text_input f, :name, placeholder: "Name" %>
 <%# Here we put the errors from the changeset %>
