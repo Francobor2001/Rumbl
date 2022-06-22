@@ -1,0 +1,4 @@
+<h1> Showing user </h1>
+
+<%# renderiza otro .eex %>
+<%= render "user.html", user: @user %>
