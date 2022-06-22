@@ -23,7 +23,12 @@ defmodule RumblWeb.Router do
     #list the router we want generated
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+  end
 
+  scope "/manage", RumblWeb do
+
+    pipe_through [:browser, :authenticate_user] #We authenticate the user before going to the video controller
+    resources "/videos", VideoController
 
   end
 

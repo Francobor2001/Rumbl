@@ -5,7 +5,7 @@ alias Rumbl.Accounts
 alias Rumbl.Accounts.User
 
 #we plug the "authenticate" function and it executes before very action
-plug :authenticate when action in [:index, :show]
+plug :authenticate_user when action in [:index, :show]
 
 
 
@@ -41,18 +41,4 @@ def index(conn, _params) do
         render(conn, "new.html", changeset: changeset)
       end
     end
-
-#If there’s a current user, we return the connection unchanged.
-#Otherwise we store a flash message and redirect back to our application root.
-defp authenticate(conn, _opts) do
-  if conn.assigns.current_user do
-  conn
-  else
-  conn
-  |> IO.inspect(label: "ENTROOOOO")
-  |> put_flash(:error, "You must be logged in to access that page")
-  |> redirect(to: Routes.page_path(conn, :index))
-  |> halt()
   end
-end
-end
