@@ -6,23 +6,21 @@ defmodule RumblWeb.SessionController do
     render(conn, "new.html")
   end
 
-  def create(
-    conn, %{"session" => %{"username" => username, "password" => pass}}
-  ) do
-    case Rumbl.Accounts.authenticate_by_username_and_pass(username, pass) do
-      {:ok, user} ->
-        conn
-        |> RumblWeb.Auth.login(user)
-        |> put_flash(:info, "Welcome!")
-        |> redirect(to: Routes.page_path(conn, :index))
+  def create( conn, %{"session" => %{"username" => username, "password" => pass}} )
+  do
+case Rumbl.Accounts.authenticate_by_username_and_pass(username, pass) do
+  {:ok, user} ->
 
-        {:error, _reason} ->
-          conn
-          |> put_flash(:error, "Invalid username/password combination")
-          |> render("new.html")
-    end
+conn
+|> RumblWeb.Auth.login(user)
+|> put_flash(:info, "Welcome back!")
+|> redirect(to: Routes.page_path(conn, :index))
 
-  end
+{:error, _reason} -> conn
+|> put_flash(:error, "Invalid username/password combination")
+|> render("new.html")
+ end
+end
 
   def delete(conn, _) do
     conn

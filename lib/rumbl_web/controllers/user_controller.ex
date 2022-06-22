@@ -25,12 +25,10 @@ def index(conn, _params) do
   #Es como el metodo GET de c#, no obtiene parametros y solo muestra la vista
   def new(conn, _params) do
     changeset = Accounts.change_registration(%User{}, %{})
-    IO.inspect(changeset)
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
-
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         conn
@@ -51,6 +49,7 @@ defp authenticate(conn, _opts) do
   conn
   else
   conn
+  |> IO.inspect(label: "ENTROOOOO")
   |> put_flash(:error, "You must be logged in to access that page")
   |> redirect(to: Routes.page_path(conn, :index))
   |> halt()

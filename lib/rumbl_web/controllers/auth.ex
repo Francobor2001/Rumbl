@@ -3,6 +3,7 @@ import Plug.Conn
 
 def init(opts), do: opts
 
+#asigna a la conexion el usuario
 def call(conn, _opts) do
     user_id = get_session(conn, :user_id)
     user = user_id && Rumbl.Accounts.get_user(user_id)

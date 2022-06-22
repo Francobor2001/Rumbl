@@ -24,12 +24,15 @@ def changeset(user, attrs) do
 end
 #Check if the password is correct and create an encripted password in the db
 def registration_changeset(user, params) do
+  IO.inspect(params)
    user
 |> changeset(params)
 |> cast(params, [:password])
 |> validate_required([:password])
 |> validate_length(:password, min: 6, max: 100)
 |> put_pass_hash()
+
+
 end
 
 def put_pass_hash(changeset) do
