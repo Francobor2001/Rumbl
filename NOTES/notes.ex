@@ -137,3 +137,80 @@ It’s useful for creating a resource when you want to define the context functi
 
 4)
 mix ecto.gen.migration create_categories.
+
+
+#Makes querys
+1) import Ecto.Query
+2) alias Rumbl.Repo
+3) alias Rumbl.Multimedia.Category
+
+Ejemplo
+query = from c in Category, select: c.name
+llamada: Repo.all query
+
+Ejemplo
+Repo.all from c in Category, order_by: c.name, select: {c.name, c.id}
+
+#concatenates querys
+users_count = from u in User, select: count(u.id)
+
+j_users = from u in users_count, where: ilike(u.username, ^"%j%")
+
+#other way
+iex> User \
+...> |> select([u], count(u.id)) \
+...> |> where([u], ilike(u.username, ^"j%") or ilike(u.username, ^"c%")) \ ...> |> Repo.one()
+
+#to asign an user to a video
+video = Repo.one(from v in Video, limit: 1)
+video = Repo.preload(video, :user)
+
+#or
+video = Repo.one(from v in Video, limit: 1,
+preload: [:user])
+
+
+#----Constraints
+Constraints allow us to use underlying relational database features to help us maintain database integrity. We used constraints to prevent duplicate categories in our application.
+
+
+
+Let’s firm up some terminology before we get too far:
+
+1)constraint
+An explicit database constraint. This might be a uniqueness constraint on an index, or an integrity constraint between primary and foreign keys.
+
+2)constraint error
+The Ecto.ConstraintError. This happens when Ecto identifies a constraint prob- lem, such as trying to insert a record without specifying a required key.
+
+3)changeset constraint
+A constraint annotation added to the changeset that allows Ecto to convert constraint errors into changeset
+
+4)rror messages.
+changeset error messages
+Beautiful error messages for the consumption of humans.
+
+#valdiating uniqe date
+create unique_index(:users, [:username])
+
+#or
+def changeset(user, attrs) do user
+|> cast(attrs, [:name, :username])
+|> validate_required([:name, :username])
+|> validate_length(:username, min: 1, max: 20)
+|> unique_constraint(:username) #hereee
+end
+
+
+#----DELETING entities that are connected (category - video)
+#on te migration we can use this functions
+:nothing
+The default.
+
+:delete_all
+When the category is deleted, all videos in that category are deleted.
+
+:nilify_all
+When a category is deleted, the category_id of all associated videos is set to NULL.
+
+There’s no best option here. For the category, which supports a has_many :videos relationship, :nilify_all seems like a good choice, because the category isn’t an essential part of the video. However, when deleting a user, you likely want to delete all the videos created by that user, purging all of the user’s data.

@@ -18,5 +18,7 @@ defmodule Rumbl.Multimedia.Video do
     video
     |> cast(attrs, [:url, :title, :description, :category_id])
     |> validate_required([:url, :title, :description])
+    #Using changeset constraints only makes sense if the error message can be something the user can take action on.
+    |> assoc_constraint(:category) #check if the association was created correctly, send and error if the category is not in the db
   end
 end

@@ -4,6 +4,14 @@ defmodule RumblWeb.VideoController do
   alias Rumbl.Multimedia
   alias Rumbl.Multimedia.Video
 
+  #calls this function BEFORE every action
+  plug :load_categories when action in [:new, :create, :edit, :update]
+
+  defp load_categories(conn, _) do
+    assign(conn, :categories, Multimedia.list_alphabetical_catgories())
+  end
+
+
 #This action is called when entering the controller
 # We add the current user to the LIST FOR OUR ACTIONS
   def action(conn, _) do

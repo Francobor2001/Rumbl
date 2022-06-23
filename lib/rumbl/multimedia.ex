@@ -8,6 +8,7 @@ defmodule Rumbl.Multimedia do
   alias Rumbl.Accounts
 
   alias Rumbl.Multimedia.Video
+  alias Rumbl.Multimedia.Category
 
   @doc """
   Returns the list of videos.
@@ -116,5 +117,16 @@ end
   """
   def change_video(%Video{} = video, attrs \\ %{}) do
     Video.changeset(video, attrs)
+  end
+
+  def create_category!(name) do
+    Repo.insert!(%Category{name: name}, on_conflict: :nothing) #on_conflict: :nothing => means that the db will not raise an error if the name is duplicated
+
+  end
+
+  def list_alphabetical_catgories do
+    Category
+    |> Category.alphabetical() #sort all the categories from name
+    |> Repo.all()
   end
 end

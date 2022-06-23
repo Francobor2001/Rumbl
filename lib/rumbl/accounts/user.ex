@@ -20,6 +20,7 @@ def changeset(user, attrs) do
   |> cast(attrs, [:name, :username]) #converts a raw map of user input to a changeset, accepting only the :name and :username keys.
   |> validate_required([:name, :username])
   |> validate_length(:username, min: 1, max: 20)
+  |> unique_constraint(:username)
 
 end
 #Check if the password is correct and create an encripted password in the db

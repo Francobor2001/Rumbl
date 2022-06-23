@@ -6,4 +6,6 @@ defmodule Rumbl.Repo.Migrations.AddCategoryIdToVideo do
       add :category_id, references(:categories)
     end
   end
+
+
 end
