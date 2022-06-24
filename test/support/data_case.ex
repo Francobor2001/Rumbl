@@ -14,21 +14,26 @@ defmodule Rumbl.DataCase do
   this option is not recommended for other databases.
   """
 
+
   use ExUnit.CaseTemplate
 
-  using do
-    quote do
+  #define MACROS
+using do quote do
       alias Rumbl.Repo
+import Ecto
+import Ecto.Changeset
+import Ecto.Query
+import Rumbl.DataCase
+import Rumbl.TestHelpers
+end
+end
 
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-      import Rumbl.DataCase
-    end
-  end
 
+  #transactional test
   setup tags do
-    Rumbl.DataCase.setup_sandbox(tags)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Rumbl.Repo)
+    unless tags[:async] do Ecto.Adapters.SQL.Sandbox.mode(Rumbl.Repo, {:shared, self()})
+    end
     :ok
   end
 

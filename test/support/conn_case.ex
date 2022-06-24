@@ -23,6 +23,9 @@ defmodule RumblWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import RumblWeb.ConnCase
+      #allows this module to be i all our connection-related tests
+      import Rumbl.TestHelpers
+
 
       alias RumblWeb.Router.Helpers, as: Routes
 

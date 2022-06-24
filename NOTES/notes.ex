@@ -214,3 +214,12 @@ When the category is deleted, all videos in that category are deleted.
 When a category is deleted, the category_id of all associated videos is set to NULL.
 
 There’s no best option here. For the category, which supports a has_many :videos relationship, :nilify_all seems like a good choice, because the category isn’t an essential part of the video. However, when deleting a user, you likely want to delete all the videos created by that user, purging all of the user’s data.
+
+#----tests
+Unit test :
+exercises a function for one layer of your application.
+A unit test exercises a function for one layer of your application. For example, if you’re testing a web calculator, unit tests would exercise the Calculator module supporting your arithmetic.
+
+integration test :
+focuses on the way different layers of an application fit together.
+Endpoint - router - controller - context - view - template

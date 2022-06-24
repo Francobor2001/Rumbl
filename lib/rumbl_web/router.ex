@@ -23,6 +23,8 @@ defmodule RumblWeb.Router do
     #list the router we want generated
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+
+    get "/watch/:id", WatchController, :show
   end
 
   scope "/manage", RumblWeb do

@@ -25,6 +25,10 @@ defmodule Rumbl.Multimedia do
       |> Repo.all()
   end
 
+  def list_videos() do
+    Repo.all(Video)
+  end
+
   def get_user_video!(%Accounts.User{} = user, id) do
     Video
     |> user_videos_query(user)
